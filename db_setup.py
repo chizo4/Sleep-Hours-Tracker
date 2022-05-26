@@ -119,17 +119,14 @@ def print_records_db():
 
 
 # Initialize the database (executed only once, or when to reset the DB).
-init_db()
+#init_db()
 
 # Display all the database records.
 #print_records_db()
-
-
 
 # test
 #randomDate = datetime.datetime.today().strftime('%d/%m/%Y')
 #print(type(randomDate))
 
-
-#update_db(8, '25/04/2022')
+#update_db(7.0, '32/01/2022')
 print_records_db()

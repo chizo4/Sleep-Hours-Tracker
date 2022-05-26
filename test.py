@@ -1,16 +1,2 @@
-'''mport re
-
-hr = '320/12/2220'
-
-regexHours = '^(((0[1-9]|[12][0-9]|30)[-/]?(0[13-9]|1[012])|31[-/]?(0[13578]|1[02])|(0[1-9]|1[0-9]|2[0-8])[-/]?02)[-/]?[0-9]{4}|29[-/]?02[-/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$'
-correctHours = re.search(regexHours, str(hr))
-
-if (correctHours):
-    print(correctHours)
-else:
-    print('wrong')'''
-
-
-x = 1
-
-print(type(x)==float)
+random_date = '23/04/2022'
+print(random_date[6:])

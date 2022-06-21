@@ -18,7 +18,7 @@ def init_db():
     db = sqlite3.connect('slept_hours.db')
     cursor = db.cursor()
 
-    # Create a table with schema.
+    # Table and schema.
     cursor.execute('DROP TABLE IF EXISTS sleep_table')
     cursor.execute('''
                 CREATE TABLE sleep_table (
@@ -28,10 +28,43 @@ def init_db():
                 )
             ''')
 
-    # Commit the operations and close the DB.
+    # Commit operations and close DB.
     db.commit()
     db.close()
     print('The DB has been successfully initialized.')
+
+def check_date_exists(dt):
+    '''
+    Check if the record for the date already exists in the table.
+    '''
+    db = sqlite3.connect('slept_hours.db')
+    cursor = db.cursor()
+    cursor.execute('''SELECT date FROM sleep_table
+                        WHERE date=?''', (dt,))
+    return cursor.fetchone()
+
+def validate_hours(hr):
+    '''
+    Validate hours, i.e. check if it is float and has correct format.
+    '''
+    regex_hours = '[+]?[0-9]+\.[0-9]+'
+    correct_hours = re.search(regex_hours, str(hr))
+
+    if (type(hr)==float and correct_hours):
+        return True
+
+    return False
+
+def validate_date(dt):
+    '''
+    Validate date, i.e. check if it has format DD/MM/YYYY.
+    '''
+    regex_date = '^(((0[1-9]|[12][0-9]|30)[/]?(0[13-9]|1[012])|31[/]?(0[13578]|1[02])|(0[1-9]|1[0-9]|2[0-8])[/]?02)[/]?[0-9]{4}|29[/]?02[/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$'
+    
+    if (re.search(regex_date, dt)):
+        return True
+
+    return False
 
 def update_db(hr, dt):
     '''
@@ -67,39 +100,6 @@ def update_db(hr, dt):
             print(f'Failed to update the DB. An error occurred:\n', e)
     else:
         print(f'The record for the date - {dt} - already exists, or has incorrect format.')
-
-def check_date_exists(dt):
-    '''
-    Check if the record for the date already exists in the table.
-    '''
-    db = sqlite3.connect('slept_hours.db')
-    cursor = db.cursor()
-    cursor.execute('''SELECT date FROM sleep_table
-                        WHERE date=?''', (dt,))
-    return cursor.fetchone()
-
-def validate_hours(hr):
-    '''
-    Validate hours, i.e. check if it is float and has correct format.
-    '''
-    regex_hours = '[+]?[0-9]+\.[0-9]+'
-    correct_hours = re.search(regex_hours, str(hr))
-
-    if (type(hr)==float and correct_hours):
-        return True
-
-    return False
-
-def validate_date(dt):
-    '''
-    Validate date, i.e. check if it has format DD/MM/YYYY.
-    '''
-    regex_date = '^(((0[1-9]|[12][0-9]|30)[/]?(0[13-9]|1[012])|31[/]?(0[13578]|1[02])|(0[1-9]|1[0-9]|2[0-8])[/]?02)[/]?[0-9]{4}|29[/]?02[/]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$'
-    
-    if (re.search(regex_date, dt)):
-        return True
-
-    return False
 
 def print_records_db():
     '''

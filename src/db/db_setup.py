@@ -33,7 +33,7 @@ def init_db():
     db.close()
     print('The DB has been successfully initialized.')
 
-def check_date_exists(dt):
+def date_exists(dt):
     '''
     Check if the record for the date already exists in the table.
     '''
@@ -70,16 +70,11 @@ def update_db(hr, dt):
     '''
     Update the database with new record (if correct and not exists).
     '''
-    # check if date already exists
-    date_exists = check_date_exists(dt)
-
-    # correct float
+    date_already_exists = date_exists(dt)
     correct_hours = validate_hours(hr)
-    
-    # correct date format
     correct_date = validate_date(dt)
 
-    if ((not date_exists) and correct_hours and correct_date):
+    if ((not date_already_exists) and correct_hours and correct_date):
         try:
             db = sqlite3.connect('slept_hours.db')
             cursor = db.cursor()
@@ -106,7 +101,7 @@ def print_records_db():
     Display the database records.
     '''
     try:
-        # Connect with the DB, create dataframe and display all its contents.
+        # Connect with DB, create dataframe and display its contents.
         db = sqlite3.connect('slept_hours.db')
         df = pd.read_sql_query("SELECT * FROM sleep_table", db)
         print(df.to_string())
@@ -118,15 +113,14 @@ def print_records_db():
 
 
 
-# Initialize the database (executed only once, or when to reset the DB).
+# Initialize the database (executed only once, or when resetting the DB).
 #init_db()
 
-# Display all the database records.
+# Display all the raw database records (optional).
 #print_records_db()
 
 # test
 #randomDate = datetime.datetime.today().strftime('%d/%m/%Y')
 #print(type(randomDate))
 
-#update_db(7.0, '32/01/2022')
-print_records_db()
+update_db(7.0, '32/01/2022')
